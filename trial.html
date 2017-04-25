@@ -1,0 +1,97 @@
+<html>
+<head>
+  <title>jsadh</title>
+  <style>
+  body{
+    overflow: hidden;
+  }
+   .all{
+     position: fixed;
+     width: 16%;
+     height: 1%;
+     padding: 0;
+     margin: 0;
+     margin-left: 42%;
+     margin-top: 25%;
+     background-color: red;
+     transform: rotate(0deg);
+     transition-duration: 2s;
+   }
+   #all2{
+     width: 10vw;
+     height: 10vw;
+     background-color: blue;
+     position: fixed;
+     margin-top: 20%;
+     margin-left: 44.5%;
+     border-radius: 50%;
+   }
+   #all3{
+     width: 90%;
+     height: 90%;
+     background-color: white;
+     margin-top: 5%;
+     margin-left: 5%;
+     border-radius: 50%;
+   }
+  </style>
+  <script>
+  window.onload = function () {
+    audio_file.onchange = function(){
+      var files = this.files;
+      var file = URL.createObjectURL(files[0]);
+      audio.src = file;
+      audio.play();
+  };
+     audioCtx = new AudioContext();
+     analyser = audioCtx.createAnalyser();
+     source = audioCtx.createMediaElementSource(audio);
+     source.connect(analyser);
+     analyser.connect(audioCtx.destination);
+     analyser.fftSize = 32;
+
+     var frequencyData = new Uint8Array(analyser.frequencyBinCount);
+     var rotated = false;
+     var deg=[0,0,0,0,0];
+     function renderFrame() {
+         analyser.getByteFrequencyData(frequencyData);
+         deg[0] = (frequencyData[0] * frequencyData[1]);
+          deg[1] = (frequencyData[2] * frequencyData[3]);
+         deg[2] = (frequencyData[4] * frequencyData[5]);
+         deg[3] = (frequencyData[6] * frequencyData[7]);
+         deg[4] = (frequencyData[8] * frequencyData[9]);
+         u=0;
+         var div = document.getElementsByClassName('all');
+         if(deg >= 720) deg = deg-720;
+
+         for(u=0;u<5;u++){
+         div[u].style.webkitTransform = 'rotate('+deg[u]+'deg)';
+         div[u].style.mozTransform    = 'rotate('+deg[u]+'deg)';
+         div[u].style.msTransform     = 'rotate('+deg[u]+'deg)';
+         div[u].style.oTransform      = 'rotate('+deg[u]+'deg)';
+         div[u].style.transform       = 'rotate('+deg[u]+'deg)';
+
+     }
+     console.log(frequencyData)
+     requestAnimationFrame(renderFrame);
+   }
+     audio.pause();
+     audio.play();
+     renderFrame();
+
+  };
+  </script>
+</head>
+<body>
+  <input id="audio_file" type="file" accept="audio/*" />
+<audio id="audio"></audio>
+<button onclick="audio.pause();">snfsjd</button>
+<button onclick="audio.play();">snfsjd</button>
+<!--  <div id="all2" onclick="rotor();"><div id="all3"></div></div>-->
+  <div class="all"></div>
+  <div class="all" style="margin-left:10%;"></div>
+  <div class="all" style="margin-left:26%;"></div>
+  <div class="all" style="margin-left:58%;"></div>
+  <div class="all" style="margin-left:74%;"></div>
+</body>
+</html>
