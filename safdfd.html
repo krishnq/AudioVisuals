@@ -32,14 +32,14 @@
       audio.src = file;
       audio.play();
   };
-      var x=new Array(2048),y=new Array(2048);
-      var ix=new Array(2048),iy=new Array(2048);
-      for(var i=0;i<2048;i++){
+      var x=new Array(1024),y=new Array(1024);
+      var ix=new Array(1024),iy=new Array(1024);
+      for(var i=0;i<1024;i++){
         var node=document.createElement("div");
         node.className = "block";
         document.getElementById('main').appendChild(node);
-        x[i]= (100*Math.cos(i*180/((Math.PI)*2048)));
-        y[i] = (100*Math.sin(i*180/((Math.PI)*2048)))+250;
+        x[i]= (100*Math.cos(i*180/((Math.PI)*1024)));
+        y[i] = (100*Math.sin(i*180/((Math.PI)*1024)))+250;
         node.style.transform = "translate("+x[i]+"px,"+y[i]+"px)";
       }
      audioCtx = new AudioContext();
@@ -47,7 +47,7 @@
      source = audioCtx.createMediaElementSource(audio);
      source.connect(analyser);
      analyser.connect(audioCtx.destination);
-     analyser.fftSize = 4096;
+     analyser.fftSize = 2048;
 
      var frequencyData = new Uint8Array(analyser.frequencyBinCount);
      var rotated = false;
@@ -58,9 +58,9 @@
          var giver = document.getElementsByClassName('block');
 <!-- WRITE THE CHANGES YOU WANT IN HERE -->
 
-  for(var u=0;u<2048;u++){
-    x[u]= ((frequencyData[u]+100)*Math.cos(u*180/((Math.PI)*2048)));
-    y[u] = ((100+frequencyData[u])*Math.sin(u*180/((Math.PI)*2048)))+250;
+  for(var u=0;u<1024;u++){
+    x[u]= ((frequencyData[u]+100)*Math.cos(u*180/((Math.PI)*1024)));
+    y[u] = ((100+frequencyData[u])*Math.sin(u*180/((Math.PI)*1024)))+250;
     giver[u].style.transform = "translate("+x[u]+"px,"+y[u]+"px)";
 
     var clr="indigo";
