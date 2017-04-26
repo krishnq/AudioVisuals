@@ -1,0 +1,99 @@
+<html>
+<head>
+  <title>jsadh</title>
+  <style>
+  body{
+    overflow: hidden;
+  }
+
+  </style>
+  <script>
+
+  window.onload = function () {
+    var int=0;
+    audio_file.onchange = function(){
+  var jum=250;
+      var files = this.files;
+      var file = URL.createObjectURL(files[0]);
+      audio.src = file;
+      audio.play();
+
+           audioCtx = new AudioContext();
+           analyser = audioCtx.createAnalyser();
+           source = audioCtx.createMediaElementSource(audio);
+           source.connect(analyser);
+           analyser.connect(audioCtx.destination);
+           analyser.fftSize = 1024;
+
+           var frequencyData = new Uint8Array(analyser.frequencyBinCount);
+           var rotated = false;
+           var deg=[0,0,0,0,0];
+
+           function renderFrame() {
+               analyser.getByteFrequencyData(frequencyData);
+               var giver = document.getElementsByClassName('block');
+      <!-- WRITE THE CHANGES YOU WANT IN HERE -->
+      var node2=document.createElement("div");
+      node2.className = "main2";
+      var node1=document.createElement("div");
+      node1.className = "main";
+      var node=document.createElement("div");
+      node.className = "sub";
+      node1.style.height = "100%";
+      node1.style.width = "100%";
+      node2.style.height = jum+"px";
+      node2.style.width = jum+"px";
+      node.style.height = jum-2+"px";
+      node.style.width = jum-2+"px";
+      node2.style.position = "fixed";
+      node1.style.position = "fixed";
+      node2.style.backgroundColor = "red";
+      node.style.backgroundColor = "white";
+      node2.style.marginLeft = "50%";
+      node2.style.marginTop = "25%";
+      node.style.marginLeft = "1px";
+      node.style.marginTop = "1px";
+      jum=jum-.3;
+
+      node1.appendChild(node2);
+      node2.appendChild(node);
+      document.body.appendChild(node1);
+      var fin=0;
+      for(var t=399;t<500;t++){
+        fin = fin+frequencyData[0];
+      }
+      fin=fin/100;
+      node1.style.webkitTransform = 'rotate('+fin+'deg)';
+      node1.style.mozTransform    = 'rotate('+fin+'deg)';
+      node1.style.msTransform     = 'rotate('+fin+'deg)';
+      node1.style.oTransform      = 'rotate('+fin+'deg)';
+      node1.style.transform       = 'rotate('+fin+'deg)';
+
+      node2.style.webkitTransform = 'translate(-50%,-50%)';
+      node2.style.mozTransform    = 'translate(-50%,-50%)';
+      node2.style.msTransform     = 'translate(-50%,-50%)';
+      node2.style.oTransform      = 'translate(-50%,-50%)';
+      node2.style.transform       = 'translate(-50%,-50%)';
+
+      <!-- WRITE ABOVE THIS LINE -->
+           console.log(frequencyData)
+           requestAnimationFrame(renderFrame);
+         }
+           audio.pause();
+           audio.play();
+           renderFrame();
+
+  };
+
+  };
+  </script>
+</head>
+<body>
+  <input id="audio_file" type="file" accept="audio/*" />
+<audio id="audio"></audio>
+<button onclick="audio.pause();"> Pause </button>
+<button onclick="audio.play();"> Play </button>
+
+
+</body>
+</html>
