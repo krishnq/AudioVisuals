@@ -25,6 +25,12 @@
   </style>
   <script>
   var fin=0;
+    var num=512;
+    funtion valchang(){
+      if(num==512)
+        num=1024;
+      else num=512;
+    }
   window.onload = function () {
     audio_file.onchange = function(){
       var files = this.files;
@@ -32,14 +38,14 @@
       audio.src = file;
       audio.play();
   };
-      var x=new Array(512),y=new Array(512);
-      var ix=new Array(512),iy=new Array(512);
-      for(var i=0;i<512;i++){
+      var x=new Array(num),y=new Array(num);
+      var ix=new Array(num),iy=new Array(num);
+      for(var i=0;i<num;i++){
         var node=document.createElement("div");
         node.className = "block";
         document.getElementById('main').appendChild(node);
-        x[i]= (100*Math.cos(i*180/((Math.PI)*512)));
-        y[i] = (100*Math.sin(i*180/((Math.PI)*512)))+250;
+        x[i]= (100*Math.cos(i*180/((Math.PI)*num)));
+        y[i] = (100*Math.sin(i*180/((Math.PI)*num)))+250;
         node.style.transform = "translate("+x[i]+"px,"+y[i]+"px)";
       }
      audioCtx = new AudioContext();
@@ -47,7 +53,7 @@
      source = audioCtx.createMediaElementSource(audio);
      source.connect(analyser);
      analyser.connect(audioCtx.destination);
-     analyser.fftSize = 1024;
+     analyser.fftSize = 2*num;
 
      var frequencyData = new Uint8Array(analyser.frequencyBinCount);
      var rotated = false;
@@ -58,9 +64,9 @@
          var giver = document.getElementsByClassName('block');
 <!-- WRITE THE CHANGES YOU WANT IN HERE -->
 
-  for(var u=0;u<512;u++){
-    x[u]= ((frequencyData[u]+100)*Math.cos(u*180/((Math.PI)*512)));
-    y[u] = ((100+frequencyData[u])*Math.sin(u*180/((Math.PI)*512)))+250;
+  for(var u=0;u<num;u++){
+    x[u]= ((frequencyData[u]+100)*Math.cos(u*180/((Math.PI)*num)));
+    y[u] = ((100+frequencyData[u])*Math.sin(u*180/((Math.PI)*num)))+250;
     giver[u].style.transform = "translate("+x[u]+"px,"+y[u]+"px)";
 
     var clr="indigo";
@@ -91,6 +97,7 @@
 <audio id="audio"></audio>
 <button onclick="audio.pause();"> Pause </button>
 <button onclick="audio.play();"> Play </button>
+  <button onclick="valchang();">change density</button>
 
 <div id="main"></div>
 
