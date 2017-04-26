@@ -1,0 +1,98 @@
+<html>
+<head>
+  <title>jsadh</title>
+  <style>
+  body{
+    overflow: hidden;
+  }
+  #main{
+    width: 1200px;
+    height: 500px;
+    position: fixed;
+    margin-left: 4%;
+    margin-top: 4%;
+  }
+  .block{
+    position: absolute;
+    height: 3px;
+    width: 3px;
+    margin: 0;
+    padding: 0;
+    margin-left: 50%;
+    background-color: red;
+    border-radius: 50%;
+  }
+  </style>
+  <script>
+  var fin=0;
+  window.onload = function () {
+    audio_file.onchange = function(){
+      var files = this.files;
+      var file = URL.createObjectURL(files[0]);
+      audio.src = file;
+      audio.play();
+  };
+      var x=new Array(2048),y=new Array(2048);
+      var ix=new Array(2048),iy=new Array(2048);
+      for(var i=0;i<2048;i++){
+        var node=document.createElement("div");
+        node.className = "block";
+        document.getElementById('main').appendChild(node);
+        x[i]= (100*Math.cos(i*180/((Math.PI)*2048)));
+        y[i] = (100*Math.sin(i*180/((Math.PI)*2048)))+250;
+        node.style.transform = "translate("+x[i]+"px,"+y[i]+"px)";
+      }
+     audioCtx = new AudioContext();
+     analyser = audioCtx.createAnalyser();
+     source = audioCtx.createMediaElementSource(audio);
+     source.connect(analyser);
+     analyser.connect(audioCtx.destination);
+     analyser.fftSize = 4096;
+
+     var frequencyData = new Uint8Array(analyser.frequencyBinCount);
+     var rotated = false;
+     var deg=[0,0,0,0,0];
+
+     function renderFrame() {
+         analyser.getByteFrequencyData(frequencyData);
+         var giver = document.getElementsByClassName('block');
+<!-- WRITE THE CHANGES YOU WANT IN HERE -->
+
+  for(var u=0;u<2048;u++){
+    x[u]= ((frequencyData[u]+100)*Math.cos(u*180/((Math.PI)*2048)));
+    y[u] = ((100+frequencyData[u])*Math.sin(u*180/((Math.PI)*2048)))+250;
+    giver[u].style.transform = "translate("+x[u]+"px,"+y[u]+"px)";
+
+    var clr="indigo";
+
+    giver[u].style.backgroundColor = clr;
+  }
+  fin=fin+1;
+  if(fin>=360) fin=fin-360;
+  document.getElementById('main').style.webkitTransform = 'rotate('+fin+'deg)';
+  document.getElementById('main').style.mozTransform    = 'rotate('+fin+'deg)';
+  document.getElementById('main').style.msTransform     = 'rotate('+fin+'deg)';
+  document.getElementById('main').style.oTransform      = 'rotate('+fin+'deg)';
+  document.getElementById('main').style.transform       = 'rotate('+fin+'deg)';
+
+<!-- WRITE ABOVE THIS LINE -->
+     console.log(frequencyData)
+     requestAnimationFrame(renderFrame);
+   }
+     audio.pause();
+     audio.play();
+     renderFrame();
+
+  };
+  </script>
+</head>
+<body>
+  <input id="audio_file" type="file" accept="audio/*" />
+<audio id="audio"></audio>
+<button onclick="audio.pause();"> Pause </button>
+<button onclick="audio.play();"> Play </button>
+
+<div id="main"></div>
+
+</body>
+</html>
