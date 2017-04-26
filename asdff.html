@@ -5,26 +5,37 @@
   body{
     overflow: hidden;
   }
-  #main{
-    width: 1200px;
-    height: 500px;
-    position: fixed;
-    margin-left: 4%;
-    margin-top: 4%;
-  }
-  .block{
-    position: absolute;
-    height: 3px;
-    width: 3px;
-    margin: 0;
-    padding: 0;
-    margin-left: 50%;
-    background-color: red;
-    border-radius: 50%;
-  }
+   .all{
+     position: fixed;
+     width: 16%;
+     height: 3px;
+     padding: 0;
+     margin: 0;
+     margin-left: 42%;
+     margin-top: 25%;
+     background-color: red;
+     transform: rotate(0deg);
+     transition-duration: 2s;
+   }
+   #all2{
+     width: 10vw;
+     height: 10vw;
+     background-color: blue;
+     position: fixed;
+     margin-top: 20%;
+     margin-left: 45%;
+     border-radius: 50%;
+   }
+   #all3{
+     width: 90%;
+     height: 90%;
+     background-color: white;
+     margin-top: 5%;
+     margin-left: 5%;
+     border-radius: 50%;
+   }
   </style>
   <script>
-  var fin=0;
   window.onload = function () {
     audio_file.onchange = function(){
       var files = this.files;
@@ -32,22 +43,12 @@
       audio.src = file;
       audio.play();
   };
-      var x=new Array(512),y=new Array(512);
-      var ix=new Array(512),iy=new Array(512);
-      for(var i=0;i<512;i++){
-        var node=document.createElement("div");
-        node.className = "block";
-        document.getElementById('main').appendChild(node);
-        x[i]= (100*Math.cos(i*180/((Math.PI)*512)));
-        y[i] = (100*Math.sin(i*180/((Math.PI)*512)))+250;
-        node.style.transform = "translate("+x[i]+"px,"+y[i]+"px)";
-      }
      audioCtx = new AudioContext();
      analyser = audioCtx.createAnalyser();
      source = audioCtx.createMediaElementSource(audio);
      source.connect(analyser);
      analyser.connect(audioCtx.destination);
-     analyser.fftSize = 1024;
+     analyser.fftSize = 32;
 
      var frequencyData = new Uint8Array(analyser.frequencyBinCount);
      var rotated = false;
@@ -55,25 +56,30 @@
 
      function renderFrame() {
          analyser.getByteFrequencyData(frequencyData);
-         var giver = document.getElementsByClassName('block');
+         deg[0] = (frequencyData[0] * frequencyData[1]);
+          deg[1] = (frequencyData[2] * frequencyData[3]);
+         deg[2] = (frequencyData[4] * frequencyData[5]);
+         deg[3] = (frequencyData[6] * frequencyData[7]);
+         deg[4] = (frequencyData[8] * frequencyData[9]);
+         u=0;
+         var div = document.getElementsByClassName('all');
+         if(deg >= 720) deg = deg-720;
+
 <!-- WRITE THE CHANGES YOU WANT IN HERE -->
 
-  for(var u=0;u<512;u++){
-    x[u]= ((frequencyData[u]+100)*Math.cos(u*180/((Math.PI)*512)));
-    y[u] = ((100+frequencyData[u])*Math.sin(u*180/((Math.PI)*512)))+250;
-    giver[u].style.transform = "translate("+x[u]+"px,"+y[u]+"px)";
+<!--	document.body.style.backgroundColor = "rgb("+frequencyData[6].toString()+","+frequencyData[8]+","+frequencyData[7]+")"; -->
+         for(u=0;u<5;u++){
+         div[u].style.webkitTransform = 'rotate('+deg[u]+'deg)';
+         div[u].style.mozTransform    = 'rotate('+deg[u]+'deg)';
+         div[u].style.msTransform     = 'rotate('+deg[u]+'deg)';
+         div[u].style.oTransform      = 'rotate('+deg[u]+'deg)';
+         div[u].style.transform       = 'rotate('+deg[u]+'deg)';
 
-    var clr="indigo";
+	div[u].style.backgroundColor = "rgb("+frequencyData[u]+",99,99)";
 
-    giver[u].style.backgroundColor = clr;
-  }
-  fin=fin+1;
-  if(fin>=360) fin=fin-360;
-  document.getElementById('main').style.webkitTransform = 'rotate('+fin+'deg)';
-  document.getElementById('main').style.mozTransform    = 'rotate('+fin+'deg)';
-  document.getElementById('main').style.msTransform     = 'rotate('+fin+'deg)';
-  document.getElementById('main').style.oTransform      = 'rotate('+fin+'deg)';
-  document.getElementById('main').style.transform       = 'rotate('+fin+'deg)';
+     }
+	var fin = frequencyData[1]/600 * 100;
+	document.getElementById('all2').style.borderRadius = fin+"%";
 
 <!-- WRITE ABOVE THIS LINE -->
      console.log(frequencyData)
@@ -91,8 +97,11 @@
 <audio id="audio"></audio>
 <button onclick="audio.pause();"> Pause </button>
 <button onclick="audio.play();"> Play </button>
-
-<div id="main"></div>
-
+ <div id="all2" onclick="rotor();"><div id="all3"></div></div>
+  <div class="all"></div>
+  <div class="all" style="margin-left:10%;"></div>
+  <div class="all" style="margin-left:26%;"></div>
+  <div class="all" style="margin-left:58%;"></div>
+  <div class="all" style="margin-left:74%;"></div>
 </body>
 </html>
