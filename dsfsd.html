@@ -1,0 +1,138 @@
+<html>
+<head>
+	<title>NPO</title>
+	<script type="text/javascript">
+		var flag=0;
+		function gint(){
+			var cin=document.getElementsByClassName('content-top');
+			var cin2=document.getElementsByClassName('content-bottom');
+
+			var fin=document.getElementById('blocker');
+			var fin2=document.getElementById('blocker2');
+
+
+			if(flag == 0) {
+
+
+
+				fin.style.transform='rotate(180deg)';
+				fin2.style.transform='rotate(-180deg)';
+				flag=1;
+				
+				cin2[1].style.display = "block";
+				cin[0].style.display = "block";
+				cin2[0].style.display = "none";
+				cin[1].style.display = "none";
+				
+				document.getElementById('divider').style.transform = "rotate(180deg)";
+				document.getElementById('divider2').style.transform = "rotate(-180deg)";
+
+				document.getElementById('intro').innerHTML = "UNDER </br> THE </br> DESK";
+			}
+			else {
+			
+				fin.style.transform = 'rotate(0deg)';
+				fin2.style.transform = 'rotate(0deg)';
+				flag=0;
+
+				cin2[0].style.display = "block";
+				cin[1].style.display = "block";
+				cin2[1].style.display = "none";
+				cin[0].style.display = "none";
+
+				document.getElementById('divider').style.transform = "rotate(0deg)";
+				document.getElementById('divider2').style.transform = "rotate(0deg)";
+
+				document.getElementById('intro').innerHTML = "ON </br> THE </br> DESK";
+			}
+		}
+	</script>
+	<style type="text/css">
+		body{
+			overflow: hidden;
+			padding: 0;
+			margin: 0;
+		}
+		#blocker,#blocker2{
+			position: fixed;
+			height: 100%;
+			width: 200%;
+			padding: 0;
+			margin: 0;
+			top: 0;
+			left: -50%;
+			transition-duration: 2s;
+		}
+		#divider{
+			width: 200%;
+			left: -50%;
+			position: fixed;
+			height: .5%;
+			top: 49.5%;
+			background-color: red;
+			transition-duration: 2s;
+		}
+		#divider2{
+			width: 200%;
+			left: -50%;
+			position: fixed;
+			height: .5%;
+			top: 50%;
+			background-color: red;
+			transition-duration: 2s;
+		}
+		#click{
+			width: 10vw;
+			height: 10vw;
+			border-radius: 50%;
+			background-color: green;
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%);
+		}
+		#click2{
+			left: 5%;
+			top: 5%;
+			height: 90%;
+			width: 90%;
+			border-radius: 50%;
+			position: fixed;
+			background-color: white;
+			transition-duration: 2s;
+			text-align: center;
+		}
+		.content-top,.content-bottom{
+			width: 100%;
+			height: 50%;
+			position: fixed;
+			top: 0;
+			left: 0;
+			display: block;
+		}
+		.content-bottom{
+			top: 50.5%;
+		}
+	</style>
+</head>
+
+<body>
+<div id="blocker">
+	<div class="content-top" style="background-color: pink;display: none;"></div>
+	<div class="content-top" style="background-color: yellow;top: 50%;"></div>
+</div>
+<div id="blocker2">
+	<div class="content-bottom" style="background-color: blue;top: 0%;"></div>
+	<div class="content-bottom" style="background-color: gray;display: none;"></div>
+</div>
+
+	<div id="divider"></div>
+	<div id="divider2"></div>
+	<div id="click" onclick="gint();">
+		<div id="click2"> 
+			<div id="intro" style="padding-top: 30%;transition-duration: 2s;">ON </br> THE </br> DESK</div>
+		</div>
+	</div>
+
+</body>
+</html>
